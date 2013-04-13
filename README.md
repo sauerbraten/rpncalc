@@ -18,7 +18,7 @@ Now, in your `$GOPATH/bin` there will be the `rpncalc` executable.
 
 	rpncalc <input>
 
-`<input>` is a line consisting of int literals and operators. Operators currently supported are:
+`<input>` is a string consisting of int literals and operators; divided by spaces. Operators currently supported are:
 
 - `+`
 - `-`
