@@ -57,7 +57,7 @@ func main() {
 	// make sure stack is now empty
 	_, err = s.Pop()
 	if err == nil {
-		panic("stack not empty!")
+		fmt.Fprintln(os.Stderr, "stack not empty!")
 	}
 }
 
@@ -71,7 +71,8 @@ func eval(x string) {
 		// probably dealing with an int literal, but let's make sure
 		if !intExp.MatchString(x) {
 			// invalid input
-			panic("invalid input: " + x)
+			fmt.Fprintln(os.Stderr, "invalid input:", x)
+			os.Exit(1)
 		}
 
 		f = function{0, func(args []interface{}) interface{} { return args[0] }} // for int literals; returns its only argument
