@@ -12,38 +12,33 @@ import (
 	"strings"
 )
 
-// regular expressions to recognize operators 
-var regularExpressions = []*regexp.Regexp{
-	regexp.MustCompile("^-?\\d+$"),  // matches "2", "129832", "-843", etc.
-	regexp.MustCompile("^\\+$"),     // matches "+"
-	regexp.MustCompile("^\\*$"),     // matches "*"
-	regexp.MustCompile("^-$"),       // matches "-"
-	regexp.MustCompile("^/$"),       // matches "/"
-	regexp.MustCompile("^%$"),       // matches "%"
-	regexp.MustCompile("^squared$"), // matches "squared"
-}
-
 type function struct {
 	stackParameters int                                  // the number of arguments needed from stack
 	result          func(args []interface{}) interface{} // the function to execute to obtain the result
 }
 
-// corresponding functions to execute for literals and operators
-var functions = []function{
-	function{0, func(args []interface{}) interface{} { return args[0] }},                       // for int literals; returns its only argument
-	function{2, func(args []interface{}) interface{} { return args[1].(int) + args[0].(int) }}, // addition
-	function{2, func(args []interface{}) interface{} { return args[1].(int) * args[0].(int) }}, // multiplication
-	function{2, func(args []interface{}) interface{} { return args[1].(int) - args[0].(int) }}, // subtraction
-	function{2, func(args []interface{}) interface{} { return args[1].(int) / args[0].(int) }}, // division
-	function{2, func(args []interface{}) interface{} { return args[1].(int) % args[0].(int) }}, // modulo
-	function{1, func(args []interface{}) interface{} { return args[0].(int) * args[0].(int) }}, // squaring
-}
+// regular expression to ensure it's an int literal
+var intExp = regexp.MustCompile("^-?\\d+$") // matches "2", "129832", "-843", etc.
+
+// map of functions for operators
+var functions map[string]function
 
 // the global stack
 var s *stack.Stack
 
 func init() {
+	// set up the stack
 	s = stack.New()
+
+	// set up the functions; one function per operator
+	functions = make(map[string]function)
+	functions["+"] = function{2, func(args []interface{}) interface{} { return args[1].(int) + args[0].(int) }}       // addition
+	functions["*"] = function{2, func(args []interface{}) interface{} { return args[1].(int) * args[0].(int) }}       // multiplication
+	functions["-"] = function{2, func(args []interface{}) interface{} { return args[1].(int) - args[0].(int) }}       // subtraction
+	functions["/"] = function{2, func(args []interface{}) interface{} { return args[1].(int) / args[0].(int) }}       // division
+	functions["%"] = function{2, func(args []interface{}) interface{} { return args[1].(int) % args[0].(int) }}       // modulo
+	functions["squared"] = function{1, func(args []interface{}) interface{} { return args[0].(int) * args[0].(int) }} // squaring
+
 }
 
 func main() {
@@ -68,19 +63,21 @@ func main() {
 }
 
 func eval(x string) {
-	// choose correct function
-	var f function
-
-	for i, e := range regularExpressions {
-		if e.MatchString(x) {
-			f = functions[i]
-		}
-	}
-
+	// the arguments we will later pass to the function
 	args := []interface{}{}
 
-	// if x is an int literal, fix type to int and add x itself as argument
-	if regularExpressions[0].MatchString(x) {
+	// choose correct function
+	f, ok := functions[x]
+	if !ok {
+		// probably dealing with an int literal, but let's make sure
+		if !intExp.MatchString(x) {
+			// invalid input
+			panic("invalid input: " + x)
+		}
+
+		f = function{0, func(args []interface{}) interface{} { return args[0] }} // for int literals; returns its only argument
+
+		// because x is an int literal, convert to int and add it as argument
 		i, err := strconv.Atoi(x)
 		if err != nil {
 			panic(err)
