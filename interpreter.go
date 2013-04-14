@@ -38,7 +38,6 @@ func init() {
 	functions["/"] = function{2, func(args []interface{}) interface{} { return args[1].(int) / args[0].(int) }}       // division
 	functions["%"] = function{2, func(args []interface{}) interface{} { return args[1].(int) % args[0].(int) }}       // modulo
 	functions["squared"] = function{1, func(args []interface{}) interface{} { return args[0].(int) * args[0].(int) }} // squaring
-
 }
 
 func main() {
