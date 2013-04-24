@@ -33,12 +33,24 @@ All operators need 2 arguments in front of it, except for `squared` which only n
 
 	$ rpncalc "2 3 +"
 	5
+	
+ `2` and `3` are the arguments for the `+` operator.
 
 	$ rpncalc "2 3 + 4 5 + *"
 	45
 
+`2 3 +` and `4 5 +` are the arguments for the `*` operator.
+
 	$ rpncalc "2 3 + 4 5 + * 20 - 10 / squared 3 %"
 	1
+
+- `2 3 +` → `5`
+- `4 5 +` → `9`
+- `5 9 *` → `45`
+- `45 20 -` → `25`
+- `20 10 /` → `2`
+- `2 squared` → `4`
+- `4 3 %` → `1`
 
 ## License
 
