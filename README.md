@@ -18,26 +18,26 @@ Now, in your `$GOPATH/bin` there will be the `rpncalc` executable.
 
 	rpncalc <input>
 
-`<input>` is a string consisting of int literals and operators; divided by spaces. Operators currently supported are:
+`<input>` consists of int literals and operators; divided by spaces. Operators currently supported are:
 
 - `+`
 - `-`
-- `*`
+- `·`
 - `/`
 - `%`
 - `squared`
 
-All operators need 2 arguments in front of it, except for `squared` which only needs one.
+All operators need 2 arguments in front of it, except for `squared` which only needs one. The · one is `Alt Gr` + `,` on Linux.
 
 ### Examples:
 
-	$ rpncalc "2 3 +"
+	$ rpncalc 2 3 +
 	5
 
-	$ rpncalc "2 3 + 4 5 + *"
+	$ rpncalc 2 3 + 4 5 + ·
 	45
 
-	$ rpncalc "2 3 + 4 5 + * 20 - 10 / squared 3 %"
+	$ rpncalc 2 3 + 4 5 + · 20 - 10 / squared 3 %
 	1
 
 ## License
