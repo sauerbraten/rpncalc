@@ -27,7 +27,7 @@ Now, in your `$GOPATH/bin` there will be the `rpncalc` executable.
 - `%`
 - `squared`
 
-All operators need 2 arguments in front of it, except for `squared` which only needs one. The · one is `Alt Gr` + `,` on Linux.
+All operators need 2 arguments in front of it, except for `squared` which only needs one. If you can't type the `·`, see here: http://en.wikipedia.org/wiki/Interpunct#Keyboard_input. The asterisk (`*`) doesn't work since it is reserved in bash and expands to all folder contents in the current directory.
 
 ### Examples:
 
