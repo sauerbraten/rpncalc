@@ -1,15 +1,10 @@
-// A calculator for reversed polish notation, using function composition.
-// This was an exercise of concatenative programming; it only supports integer numbers. It is inspired by http://evincarofautumn.blogspot.mx/2012/02/why-concatenative-programming-matters.html.
-// For more information see http://en.wikipedia.org/wiki/Reverse_Polish_notation.
 package main
 
 import (
 	"fmt"
-	"github.com/sauerbraten/stack"
 	"os"
 	"regexp"
 	"strconv"
-	"strings"
 )
 
 type function struct {
@@ -21,44 +16,25 @@ type function struct {
 var intExp = regexp.MustCompile("^-?\\d+$") // matches "2", "129832", "-843", etc.
 
 // map of functions for operators
-var functions map[string]function
-
-// the global stack
-var s *stack.Stack
-
-func init() {
-	// set up the stack
-	s = stack.New()
-
-	// set up the functions; one function per operator
-	functions = make(map[string]function)
-	functions["+"] = function{2, func(args []interface{}) interface{} { return args[1].(int) + args[0].(int) }}       // addition
-	functions["*"] = function{2, func(args []interface{}) interface{} { return args[1].(int) * args[0].(int) }}       // multiplication
-	functions["-"] = function{2, func(args []interface{}) interface{} { return args[1].(int) - args[0].(int) }}       // subtraction
-	functions["/"] = function{2, func(args []interface{}) interface{} { return args[1].(int) / args[0].(int) }}       // division
-	functions["%"] = function{2, func(args []interface{}) interface{} { return args[1].(int) % args[0].(int) }}       // modulo
-	functions["squared"] = function{1, func(args []interface{}) interface{} { return args[0].(int) * args[0].(int) }} // squaring
-}
-
-func main() {
-	// os.Args[0] is the program path, os.Args[1] the actual input string
-	for _, v := range strings.Split(os.Args[1], " ") {
-		eval(v)
-	}
-
-	// final result is should be the only element now on the stack
-	result, err := s.Pop()
-	if err != nil {
-		panic(err)
-	}
-
-	fmt.Println(result)
-
-	// make sure stack is now empty
-	_, err = s.Pop()
-	if err == nil {
-		fmt.Fprintln(os.Stderr, "stack not empty!")
-	}
+//
+// example explanation for the + function:
+// stackParameters = 2 means eval() will pass it the top 2 values from the stack
+// the result function simply casts the first two values from the slice of values it got passed to int, adds them up, and returns the result
+//
+// here is a formatted version of the + line:
+//	"+": function{
+//		stackParameters: 2,
+//		result: func(args []interface{}) interface{} {
+//			return args[1].(int) + args[0].(int)
+//		},
+//	},
+var functions map[string]function = map[string]function{
+	"+":       function{2, func(args []interface{}) interface{} { return args[1].(int) + args[0].(int) }}, // addition
+	"·":       function{2, func(args []interface{}) interface{} { return args[1].(int) * args[0].(int) }}, // multiplication
+	"-":       function{2, func(args []interface{}) interface{} { return args[1].(int) - args[0].(int) }}, // subtraction
+	"/":       function{2, func(args []interface{}) interface{} { return args[1].(int) / args[0].(int) }}, // division
+	"%":       function{2, func(args []interface{}) interface{} { return args[1].(int) % args[0].(int) }}, // modulo
+	"squared": function{1, func(args []interface{}) interface{} { return args[0].(int) * args[0].(int) }}, // squaring
 }
 
 func eval(x string) {
