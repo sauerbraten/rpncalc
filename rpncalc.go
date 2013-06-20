@@ -14,12 +14,12 @@ var s *stack.Stack = stack.New()
 
 func main() {
 	fmt.Println(os.Args)
-	// os.Args[0] is the program path, os.Args[1] the actual input string
+	// os.Args[0] is the program path
 	for _, v := range os.Args[1:] {
 		eval(v)
 	}
 
-	// final result is should be the only element now on the stack
+	// final result should be the only element now on the stack
 	result, err := s.Pop()
 	if err != nil {
 		panic(err)
