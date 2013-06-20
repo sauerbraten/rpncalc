@@ -13,7 +13,6 @@ import (
 var s *stack.Stack = stack.New()
 
 func main() {
-	fmt.Println(os.Args)
 	// os.Args[0] is the program path
 	for _, v := range os.Args[1:] {
 		eval(v)
