@@ -5,8 +5,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/sauerbraten/stack"
 	"os"
+
+	"github.com/sauerbraten/stack"
 )
 
 // the global stack
