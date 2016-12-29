@@ -6,17 +6,17 @@ package main
 import (
 	"fmt"
 	"os"
-
-	"github.com/sauerbraten/stack"
 )
 
 // the global stack
-var s *stack.Stack = stack.New()
+var s = new(stack)
 
 func main() {
+	fmt.Println(os.Args)
+
 	// os.Args[0] is the program path
-	for _, v := range os.Args[1:] {
-		eval(v)
+	for _, token := range os.Args[1:] {
+		eval(token)
 	}
 
 	// final result should be the only element now on the stack

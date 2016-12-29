@@ -1,8 +1,6 @@
 # RPN Calculator
 
-A calculator for reversed polish notation, using function composition.
-
-This was an exercise of concatenative programming; it only supports integer numbers. It is inspired by http://evincarofautumn.blogspot.mx/2012/02/why-concatenative-programming-matters.html.
+A calculator for reversed polish notation.
 
 For more information see http://en.wikipedia.org/wiki/Reverse_Polish_notation.
 
@@ -12,34 +10,34 @@ Get the program:
 
 	$ go get github.com/sauerbraten/rpncalc
 
-Now, in your `$GOPATH/bin` there will be the `rpncalc` executable.
+This will put the `rpncalc` executable into `$GOPATH/bin`.
 
 ### Syntax:
 
 	rpncalc <input>
 
-`<input>` consists of int literals and operators; divided by spaces. Operators currently supported are:
+`<input>` consists of float64 literals and operators; divided by spaces. Operators currently supported are:
 
 - `+`
 - `-`
 - `·`
 - `/`
 - `%`
-- `squared`
+- `^`
 
-All operators need 2 arguments in front of it, except for `squared` which only needs one. If you can't type the `·`, see here: http://en.wikipedia.org/wiki/Interpunct#Keyboard_input. The asterisk (`*`) doesn't work since it is reserved in bash and expands to all folder contents in the current directory.
+All operators need 2 arguments. If you can't type the `·`, see here: http://en.wikipedia.org/wiki/Interpunct#Keyboard_input. The asterisk (`*`) doesn't work since it is reserved in bash and expands to all folder contents in the current directory.
 
 ### Examples:
 
 	$ rpncalc 2 3 +
 	5
-	
+
  `2` and `3` are the arguments for the `+` operator.
 
 	$ rpncalc 2 3 + 4 5 + ·
 	45
 
-	$ rpncalc 2 3 + 4 5 + · 20 - 10 / squared 3 %
+	$ rpncalc 2 3 + 4 5 + · 20 - 10 / 2 ^ 3 %
 	1
 
 - `2 3 +` → `5`
@@ -47,14 +45,18 @@ All operators need 2 arguments in front of it, except for `squared` which only n
 - `5 9 ·` → `45`
 - `45 20 -` → `25`
 - `20 10 /` → `2`
-- `2 squared` → `4`
+- `2 2 ^` → `4`
 - `4 3 %` → `1`
+
+
+	$ rpncalc 3 4 + 5 2 ^ · 4 6 · - 8.75 -
+	142.25
 
 ## License
 
 This code is licensed under a BSD License:
 
-Copyright (c) 2013 Alexander Willing. All rights reserved.
+Copyright (c) 2013-2016 Alexander Willing. All rights reserved.
 
 - Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
 - Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
