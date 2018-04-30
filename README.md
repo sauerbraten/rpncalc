@@ -1,6 +1,6 @@
 # RPN Calculator
 
-A calculator for reversed polish notation.
+A calculator for reverse polish notation.
 
 For more information see http://en.wikipedia.org/wiki/Reverse_Polish_notation.
 
